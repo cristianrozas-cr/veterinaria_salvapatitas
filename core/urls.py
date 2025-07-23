@@ -20,7 +20,8 @@ from pacientes import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.home, name='home'),
+    path('', views.seleccion_area, name='seleccion_area'),
+    path('home/', views.home, name='home'),
     path('registrar/', views.registrar_mascota, name='registrar_mascota'),
     path('registro-exitoso/', views.registro_exitoso, name='registro_exitoso'),
     path('mascotas/', views.listar_mascotas, name='listar_mascotas'),

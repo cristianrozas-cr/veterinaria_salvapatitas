@@ -1,12 +1,33 @@
 {% extends 'base.html' %}
 
-{% block title %}Inicio{% endblock %}
+{% block title %}Inicio - Salvapatitas{% endblock %}
 
 {% block content %}
 <div class="text-center mt-5">
-  <h1>Salvapatitas</h1>
-  <p class="lead">Gestiona las mascotas, consultas y vacunas de forma fácil y rápida.</p>
-  <a href="{% url 'listar_mascotas' %}" class="btn btn-primary btn-lg mx-2">Ver Pacientes</a>
-  <a href="{% url 'registrar_mascota' %}" class="btn btn-success btn-lg mx-2">Registrar nuevo paciente</a>
+  <h1 class="display-4 mb-3">¡Bienvenido a Salvapatitas! 🐾</h1>
+  <p class="lead">Gestiona las fichas clínicas de tus pacientes de forma fácil y rápida.</p>
+
+  <div class="d-flex flex-column flex-md-row justify-content-center gap-3 gap-md-4">
+    <a href="{% url 'listar_mascotas' %}" class="btn btn-primary btn-lg">
+      📋 Ver listado de pacientes
+    </a>
+    <a href="{% url 'registrar_mascota' %}" class="btn btn-success btn-lg">
+      ➕ Registrar nueva mascota
+    </a>
+  </div>
+
+  <!-- Opcional: métrica -->
+  <div class="row mt-5">
+    <div class="col-md-4 offset-md-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">📈 Resumen rápido</h5>
+          <p class="card-text fs-5">
+            Total de mascotas registradas: <strong>{{ total_mascotas }}</strong>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %}

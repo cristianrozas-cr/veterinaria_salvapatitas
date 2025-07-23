@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Seleccionar Área{% endblock %}
+
+{% block content %}
+<div class="text-center mt-5">
+  <h1 class="display-5 mb-4">Bienvenido a Salvapatitas</h1>
+  <p class="lead mb-5">¿A qué área deseas acceder?</p>
+
+  <div class="d-flex flex-column flex-md-row justify-content-center gap-3 gap-md-4">
+    <!-- Botón para Veterinaria -->
+    <a href="{% url 'home' %}" class="btn btn-primary btn-lg">
+      🐾 Área Veterinaria
+    </a>
+
+    <!-- Botón para Peluquería (por ahora ruta vacía o placeholder) -->
+    <a href="#" class="btn btn-success btn-lg disabled">
+      ✂️ Área Peluquería Canina
+    </a>
+  </div>
+
+  <p class="mt-4 text-muted">
+    (La sección de Peluquería Canina estará disponible próximamente)
+  </p>
+</div>
+{% endblock %}
