@@ -1,97 +1,64 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Detalle de Mascota</title>
-    <div class="mb-3">
-      <a href="{% url 'agregar_consulta' mascota.id %}" class="btn btn-success"
-        >+ Consulta</a
-      >
-      <a href="{% url 'agregar_vacuna' mascota.id %}" class="btn btn-success"
-        >+ Vacuna</a
-      >
-    </div>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-    />
-  </head>
-  <body class="container mt-5">
-    <h2>Ficha Clínica - {{ mascota.nombre }}</h2>
-    <hr />
+{% extends 'base.html' %}
 
-    <h4>Datos Generales</h4>
-    <ul>
-      <li><strong>Especie:</strong> {{ mascota.especie }}</li>
-      <li><strong>Raza:</strong> {{ mascota.raza }}</li>
-      <li><strong>Edad:</strong> {{ mascota.edad }}</li>
-      <li><strong>Sexo:</strong> {{ mascota.sexo }}</li>
-      <li>
-        <strong>Dueño:</strong> {{ mascota.nombre_dueno }} ({{
-        mascota.telefono_dueno }})
-      </li>
-    </ul>
+{% block title %}Ficha Clínica - {{ mascota.nombre }}{% endblock %}
 
-    <hr />
-    <h4>Consultas Médicas</h4>
-    {% if consultas %}
-    <ul>
-      {% for consulta in consultas %}
-      <li>
-        <strong>Fecha:</strong> {{ consulta.fecha }} <br />
-        <strong>Motivo:</strong> {{ consulta.motivo }} <br />
-        <strong>Diagnóstico:</strong> {{ consulta.diagnostico }} <br />
-        <strong>Tratamiento:</strong> {{ consulta.tratamiento }}
-      </li>
-      <a
-        href="{% url 'detalle_consulta' consulta.id %}"
-        class="btn btn-info btn-sm"
-        >Ver Detalle</a
-      >
-      <a
-        href="{% url 'editar_consulta' consulta.id %}"
-        class="btn btn-sm btn-warning"
-        >Editar</a
-      >
-      <a
-        href="{% url 'eliminar_consulta' consulta.id %}"
-        class="btn btn-sm btn-danger"
-        >Eliminar</a
-      >
-      {% endfor %}
-    </ul>
-    {% else %}
-    <p>No hay consultas registradas.</p>
-    {% endif %}
+{% block content %}
+<div class="mb-3">
+  <a href="{% url 'agregar_consulta' mascota.id %}" class="btn btn-success">+ Consulta</a>
+  <a href="{% url 'agregar_vacuna' mascota.id %}" class="btn btn-success">+ Vacuna</a>
+  <a href="{% url 'editar_mascota' mascota.id %}" class="btn btn-warning">Editar Mascota</a>
+</div>
 
-    <hr />
-    <h4>Vacunas</h4>
-    {% if vacunas %}
-    <ul>
-      {% for vacuna in vacunas %}
-      <li>
-        <strong>Fecha:</strong> {{ vacuna.fecha }} | <strong>Tipo:</strong> {{
-        vacuna.tipo_vacuna }} | <strong>Observaciones:</strong> {{
-        vacuna.observaciones }}
-      </li>
-      <a href="{% url 'detalle_vacuna' vacuna.id %}" class="btn btn-info btn-sm"
-        >Ver Detalle</a
-      >
-      <a
-        href="{% url 'editar_vacuna' vacuna.id %}"
-        class="btn btn-sm btn-warning"
-        >Editar</a
-      >
-      <a
-        href="{% url 'eliminar_vacuna' vacuna.id %}"
-        class="btn btn-sm btn-danger"
-        >Eliminar</a
-      >
-      {% endfor %}
-    </ul>
-    {% else %}
-    <p>No hay vacunas registradas.</p>
-    {% endif %}
+<h2>Ficha Clínica - {{ mascota.nombre }}</h2>
+<hr />
 
-    <a href="/mascotas/" class="btn btn-secondary mt-4">Volver al listado</a>
-  </body>
-</html>
+<h4>Datos Generales</h4>
+<ul>
+  <li><strong>Especie:</strong> {{ mascota.especie }}</li>
+  <li><strong>Raza:</strong> {{ mascota.raza }}</li>
+  <li><strong>Edad:</strong> {{ mascota.edad }}</li>
+  <li><strong>Sexo:</strong> {{ mascota.sexo }}</li>
+  <li><strong>Dueño:</strong> {{ mascota.nombre_dueno }} ({{ mascota.telefono_dueno }})</li>
+</ul>
+
+<hr />
+<h4>Consultas Médicas</h4>
+{% if consultas %}
+<ul>
+  {% for consulta in consultas %}
+  <li>
+    <strong>Fecha:</strong> {{ consulta.fecha }} <br />
+    <strong>Motivo:</strong> {{ consulta.motivo }} <br />
+    <strong>Diagnóstico:</strong> {{ consulta.diagnostico }} <br />
+    <strong>Tratamiento:</strong> {{ consulta.tratamiento }}
+    <br />
+    <a href="{% url 'detalle_consulta' consulta.id %}" class="btn btn-info btn-sm mt-1">Ver Detalle</a>
+    <a href="{% url 'editar_consulta' consulta.id %}" class="btn btn-warning btn-sm mt-1">Editar</a>
+    <a href="{% url 'eliminar_consulta' consulta.id %}" class="btn btn-danger btn-sm mt-1">Eliminar</a>
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p>No hay consultas registradas.</p>
+{% endif %}
+
+<hr />
+<h4>Vacunas</h4>
+{% if vacunas %}
+<ul>
+  {% for vacuna in vacunas %}
+  <li>
+    <strong>Fecha:</strong> {{ vacuna.fecha }} | <strong>Tipo:</strong> {{ vacuna.tipo_vacuna }} | <strong>Observaciones:</strong> {{ vacuna.observaciones }}
+    <br />
+    <a href="{% url 'detalle_vacuna' vacuna.id %}" class="btn btn-info btn-sm mt-1">Ver Detalle</a>
+    <a href="{% url 'editar_vacuna' vacuna.id %}" class="btn btn-warning btn-sm mt-1">Editar</a>
+    <a href="{% url 'eliminar_vacuna' vacuna.id %}" class="btn btn-danger btn-sm mt-1">Eliminar</a>
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p>No hay vacunas registradas.</p>
+{% endif %}
+
+<a href="{% url 'listar_mascotas' %}" class="btn btn-secondary mt-4">Volver al listado</a>
+{% endblock %}

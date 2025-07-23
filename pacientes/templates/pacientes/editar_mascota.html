@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Editar Mascota: {{ mascota.nombre }}{% endblock %}
+
+{% block content %}
+<h2>Editar Mascota: {{ mascota.nombre }}</h2>
+
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  
+  <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+  <a href="{% url 'detalle_mascota' mascota.id %}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}
