@@ -3,62 +3,79 @@
 {% block title %}Ficha Clínica - {{ mascota.nombre }}{% endblock %}
 
 {% block content %}
-<div class="mb-3">
+<div class="mb-3 d-flex gap-2 flex-wrap">
   <a href="{% url 'agregar_consulta' mascota.id %}" class="btn btn-success">+ Consulta</a>
   <a href="{% url 'agregar_vacuna' mascota.id %}" class="btn btn-success">+ Vacuna</a>
   <a href="{% url 'editar_mascota' mascota.id %}" class="btn btn-warning">Editar Mascota</a>
 </div>
 
-<h2>Ficha Clínica - {{ mascota.nombre }}</h2>
-<hr />
+<h2 class="mb-4">Ficha Clínica - {{ mascota.nombre }}</h2>
 
-<h4>Datos Generales</h4>
-<ul>
-  <li><strong>Especie:</strong> {{ mascota.especie }}</li>
-  <li><strong>Raza:</strong> {{ mascota.raza }}</li>
-  <li><strong>Edad:</strong> {{ mascota.edad }}</li>
-  <li><strong>Sexo:</strong> {{ mascota.sexo }}</li>
-  <li><strong>Dueño:</strong> {{ mascota.nombre_dueno }} ({{ mascota.telefono_dueno }})</li>
-</ul>
+<div class="card mb-4">
+  <div class="card-header bg-primary text-white">
+    Datos Generales
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item"><strong>Especie:</strong> {{ mascota.especie }}</li>
+    <li class="list-group-item"><strong>Raza:</strong> {{ mascota.raza }}</li>
+    <li class="list-group-item"><strong>Edad:</strong> {{ mascota.edad }}</li>
+    <li class="list-group-item"><strong>Sexo:</strong> {{ mascota.sexo }}</li>
+    <li class="list-group-item"><strong>Dueño:</strong> {{ mascota.nombre_dueno }} ({{ mascota.telefono_dueno }})</li>
+  </ul>
+</div>
 
-<hr />
-<h4>Consultas Médicas</h4>
-{% if consultas %}
-<ul>
-  {% for consulta in consultas %}
-  <li>
-    <strong>Fecha:</strong> {{ consulta.fecha }} <br />
-    <strong>Motivo:</strong> {{ consulta.motivo }} <br />
-    <strong>Diagnóstico:</strong> {{ consulta.diagnostico }} <br />
-    <strong>Tratamiento:</strong> {{ consulta.tratamiento }}
-    <br />
-    <a href="{% url 'detalle_consulta' consulta.id %}" class="btn btn-info btn-sm mt-1">Ver Detalle</a>
-    <a href="{% url 'editar_consulta' consulta.id %}" class="btn btn-warning btn-sm mt-1">Editar</a>
-    <a href="{% url 'eliminar_consulta' consulta.id %}" class="btn btn-danger btn-sm mt-1">Eliminar</a>
-  </li>
-  {% endfor %}
-</ul>
-{% else %}
-<p>No hay consultas registradas.</p>
-{% endif %}
+<div class="card mb-4">
+  <div class="card-header bg-success text-white">
+    Consultas Médicas
+  </div>
+  <div class="card-body">
+    {% if consultas %}
+      <ul class="list-group">
+        {% for consulta in consultas %}
+          <li class="list-group-item">
+            <p class="mb-1"><strong>Fecha:</strong> {{ consulta.fecha }}</p>
+            <p class="mb-1"><strong>Motivo:</strong> {{ consulta.motivo }}</p>
+            <p class="mb-1"><strong>Diagnóstico:</strong> {{ consulta.diagnostico }}</p>
+            <p class="mb-1"><strong>Tratamiento:</strong> {{ consulta.tratamiento }}</p>
+            <div class="d-flex gap-2 flex-wrap mt-2">
+              <a href="{% url 'detalle_consulta' consulta.id %}" class="btn btn-info btn-sm">Ver Detalle</a>
+              <a href="{% url 'editar_consulta' consulta.id %}" class="btn btn-warning btn-sm">Editar</a>
+              <a href="{% url 'eliminar_consulta' consulta.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No hay consultas registradas.</p>
+    {% endif %}
+  </div>
+</div>
 
-<hr />
-<h4>Vacunas</h4>
-{% if vacunas %}
-<ul>
-  {% for vacuna in vacunas %}
-  <li>
-    <strong>Fecha:</strong> {{ vacuna.fecha }} | <strong>Tipo:</strong> {{ vacuna.tipo_vacuna }} | <strong>Observaciones:</strong> {{ vacuna.observaciones }}
-    <br />
-    <a href="{% url 'detalle_vacuna' vacuna.id %}" class="btn btn-info btn-sm mt-1">Ver Detalle</a>
-    <a href="{% url 'editar_vacuna' vacuna.id %}" class="btn btn-warning btn-sm mt-1">Editar</a>
-    <a href="{% url 'eliminar_vacuna' vacuna.id %}" class="btn btn-danger btn-sm mt-1">Eliminar</a>
-  </li>
-  {% endfor %}
-</ul>
-{% else %}
-<p>No hay vacunas registradas.</p>
-{% endif %}
+<div class="card mb-4">
+  <div class="card-header bg-info text-white">
+    Vacunas
+  </div>
+  <div class="card-body">
+    {% if vacunas %}
+      <ul class="list-group">
+        {% for vacuna in vacunas %}
+          <li class="list-group-item">
+            <p class="mb-1"><strong>Fecha:</strong> {{ vacuna.fecha }}</p>
+            <p class="mb-1"><strong>Tipo:</strong> {{ vacuna.tipo_vacuna }}</p>
+            <p class="mb-1"><strong>Observaciones:</strong> {{ vacuna.observaciones }}</p>
+            <div class="d-flex gap-2 flex-wrap mt-2">
+              <a href="{% url 'detalle_vacuna' vacuna.id %}" class="btn btn-info btn-sm">Ver Detalle</a>
+              <a href="{% url 'editar_vacuna' vacuna.id %}" class="btn btn-warning btn-sm">Editar</a>
+              <a href="{% url 'eliminar_vacuna' vacuna.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No hay vacunas registradas.</p>
+    {% endif %}
+  </div>
+</div>
 
-<a href="{% url 'listar_mascotas' %}" class="btn btn-secondary mt-4">Volver al listado</a>
+<a href="{% url 'listar_mascotas' %}" class="btn btn-secondary mt-3">Volver al listado</a>
 {% endblock %}
