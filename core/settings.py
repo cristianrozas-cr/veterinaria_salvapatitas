@@ -87,7 +87,6 @@ DATABASES = {
     'default': dj_database_url.config(default=config('DATABASE_URL'))
 }
 
-ALLOWED_HOSTS = ['*']  # luego puedes restringirlo
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
