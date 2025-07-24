@@ -84,10 +84,7 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config(
-        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
-        conn_max_age=600,
-    )
+    'default': dj_database_url.config(default=config('DATABASE_URL'))
 }
 
 ALLOWED_HOSTS = ['*']  # luego puedes restringirlo
@@ -144,4 +141,9 @@ MESSAGE_TAGS = {
     message.WARNING: 'warning',
     message.ERROR: 'danger',
 }
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://veterinariasalvapatitas-production.up.railway.app',
+    'http://127.0.0.1:8000'
+]
 
