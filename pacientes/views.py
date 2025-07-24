@@ -3,10 +3,13 @@ from .forms import MascotaForm, ConsultaForm, VacunaForm
 from .models import Mascota, Consulta, Vacuna
 from django.contrib import messages
 from django.db.models import Q
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
+
 # Registro de Mascotas
+@login_required
 def registrar_mascota(request):
     if request.method == 'POST':
         form = MascotaForm(request.POST)
@@ -26,7 +29,7 @@ def registro_exitoso(request):
     return render(request, 'pacientes/registro_exitoso.html')
 
 # Listado de Mascotas
-
+@login_required
 def listar_mascotas(request):
     query = request.GET.get('q', '')
     if query:
@@ -167,11 +170,13 @@ def editar_consulta(request, consulta_id):
 
 
 # Area de Selección
+@login_required
 def seleccion_area(request):
     return render(request, 'seleccion_area.html')
 
 
 # Home Page
+@login_required
 def home(request):
     total_mascotas = Mascota.objects.count()
     return render(request, 'home.html', {'total_mascotas': total_mascotas})
