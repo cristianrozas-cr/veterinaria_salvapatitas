@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect, HttpResponseRe
 from .forms import MascotaForm, ConsultaForm, VacunaForm
 from .models import Mascota, Consulta, Vacuna
 from django.contrib import messages
+from django.db.models import Q
 
 # Create your views here.
 
@@ -27,8 +28,17 @@ def registro_exitoso(request):
 # Listado de Mascotas
 
 def listar_mascotas(request):
-    mascotas = Mascota.objects.all()
-    return render(request, 'pacientes/listar_mascotas.html', {'mascotas': mascotas})
+    query = request.GET.get('q', '')
+    if query:
+        mascotas = Mascota.objects.filter(
+            Q(nombre__icontains=query) | 
+            Q(especie__icontains=query) | 
+            Q(raza__icontains=query)
+        )
+    else:
+        mascotas = Mascota.objects.all()
+    return render(request, 'pacientes/listar_mascotas.html',
+                {'mascotas': mascotas, 'query': query})
 
 # Detalle de Mascota
 def detalle_mascota(request, mascota_id):
@@ -80,7 +90,6 @@ def eliminar_consulta(request, consulta_id):
 
     return render(request, 'pacientes/eliminar_consulta.html', {'consulta': consulta})
 
-from django.shortcuts import render, get_object_or_404
 
 def detalle_consulta(request, consulta_id):
     consulta = get_object_or_404(Consulta, id=consulta_id)
