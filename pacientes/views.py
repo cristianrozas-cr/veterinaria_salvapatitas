@@ -4,6 +4,7 @@ from .models import Mascota, Consulta, Vacuna
 from django.contrib import messages
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import LoginView
 
 # Create your views here.
 
@@ -180,3 +181,15 @@ def seleccion_area(request):
 def home(request):
     total_mascotas = Mascota.objects.count()
     return render(request, 'home.html', {'total_mascotas': total_mascotas})
+
+# Custom Login View
+class CustomLoginView(LoginView):
+    template_name = 'registro/login.html'
+
+    def form_valid(self, form):
+        messages.success(self.request, '¡Has iniciado sesión exitosamente! 🎉')
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'Usuario o contraseña incorrectos. Intenta de nuevo.')
+        return super().form_invalid(form)
