@@ -29,8 +29,10 @@ SECRET_KEY = config('SECRET_KEY', default='unsafe-secret-key')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='127.0.0.1,localhost').split(',')
-
+ALLOWED_HOSTS = config(
+    'ALLOWED_HOSTS',
+    default='salvapatitas.up.railway.app,127.0.0.1,localhost'
+).split(',')
 
 # Application definition
 
@@ -138,7 +140,7 @@ MESSAGE_TAGS = {
 }
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://veterinariasalvapatitas-production.up.railway.app',
+    'https://salvapatitas.up.railway.app',
     'http://127.0.0.1:8000'
 ]
 
