@@ -5,6 +5,9 @@ from django.contrib import messages
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
+from .forms import ServicioPeluqueriaForm
+from .models import ServicioPeluqueria
+from django.forms import formset_factory
 
 # Create your views here.
 
@@ -193,3 +196,28 @@ class CustomLoginView(LoginView):
     def form_invalid(self, form):
         messages.error(self.request, 'Usuario o contraseña incorrectos. Intenta de nuevo.')
         return super().form_invalid(form)
+    
+# Servicio de Peluquería
+def peluqueria_home(request):
+    return render(request, 'peluqueria/home.html')
+
+
+
+def registrar_servicios_peluqueria(request):
+    ServicioFormSet = formset_factory(ServicioPeluqueriaForm, extra=1)  # un formulario visible por defecto
+    if request.method == 'POST':
+        formset = ServicioFormSet(request.POST)
+        if formset.is_valid():
+            for form in formset:
+                if form.cleaned_data:  # evita guardar formularios vacíos
+                    form.save()
+            messages.success(request, "¡Servicios registrados correctamente!")
+            return redirect('peluqueria_home')
+    else:
+        formset = ServicioFormSet()
+
+    return render(request, 'peluqueria/registrar_servicios.html', {'formset': formset})
+
+def listar_servicios_peluqueria(request):
+    servicios = ServicioPeluqueria.objects.select_related('mascota').all().order_by('-fecha_servicio')
+    return render(request, 'peluqueria/listar_servicios.html', {'servicios': servicios})

@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Registrar Servicios de Peluquería{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Registrar servicios de peluquería</h2>
+
+<form method="post">
+  {% csrf_token %}
+  {{ formset.management_form }}
+
+  <div id="formset-container">
+    {% for form in formset %}
+      <div class="card mb-3 p-3">
+        {{ form.as_p }}
+      </div>
+    {% endfor %}
+  </div>
+
+  <button type="button" id="add-form" class="btn btn-secondary mb-3">➕ Agregar otro servicio</button>
+  <br>
+  <button type="submit" class="btn btn-success">Guardar servicios</button>
+</form>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const addFormBtn = document.getElementById('add-form');
+    const formsetContainer = document.getElementById('formset-container');
+    const totalForms = document.getElementById('id_form-TOTAL_FORMS');
+
+    addFormBtn.addEventListener('click', function() {
+      const currentFormCount = parseInt(totalForms.value);
+      const emptyForm = formsetContainer.children[0].cloneNode(true);
+
+      // limpiar campos
+      emptyForm.querySelectorAll('input, select, textarea').forEach(input => {
+        if (input.type !== 'hidden') input.value = '';
+      });
+
+      // actualizar índices de los name y id
+      emptyForm.innerHTML = emptyForm.innerHTML.replace(/form-0-/g, `form-${currentFormCount}-`);
+      formsetContainer.appendChild(emptyForm);
+
+      totalForms.value = currentFormCount + 1;
+    });
+  });
+</script>
+{% endblock %}

@@ -1,5 +1,6 @@
 from django import forms
 from .models import Mascota, Consulta, Vacuna
+from .models import ServicioPeluqueria
 
 class MascotaForm(forms.ModelForm):
     class Meta:
@@ -36,3 +37,29 @@ class VacunaForm(forms.ModelForm):
             'tipo_vacuna': forms.TextInput(attrs={'class': 'form-control'}),
             'observaciones': forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
         }
+
+class ServicioPeluqueriaForm(forms.ModelForm):
+    nombre_mascota = forms.CharField(label="Nombre de la mascota")
+
+    class Meta:
+        model = ServicioPeluqueria
+        fields = ['nombre_mascota', 'fecha_servicio', 'tipo_servicio', 'descripcion', 'precio', 'estado', 'encargado']
+
+    def clean_nombre_mascota(self):
+        nombre = self.cleaned_data['nombre_mascota']
+        try:
+            mascota = Mascota.objects.get(nombre__iexact=nombre.strip())
+        except Mascota.DoesNotExist:
+            raise forms.ValidationError("No se encontró una mascota con ese nombre.")
+        return mascota  # devolvemos la instancia
+
+    def save(self, commit=True):
+        # Sobrescribimos para asignar la mascota encontrada
+        mascota = self.cleaned_data['nombre_mascota']
+        instance = super().save(commit=False)
+        instance.mascota = mascota
+        if commit:
+            instance.save()
+        return instance
+    
+ServicioPeluqueriaFormSet = forms.formset_factory(ServicioPeluqueriaForm, extra=3)

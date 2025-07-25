@@ -39,4 +39,7 @@ urlpatterns = [
     path('mascotas/<int:mascota_id>/editar/', views.editar_mascota, name='editar_mascota'),
     path('accounts/login/', CustomLoginView.as_view(), name='login'),
     path('accounts/logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
+    path('peluqueria/', views.peluqueria_home, name='peluqueria_home'),
+    path('peluqueria/registrar/', views.registrar_servicios_peluqueria, name='registrar_servicios_peluqueria'),
+    path('peluqueria/servicios/', views.listar_servicios_peluqueria, name='listar_servicios_peluqueria'),
 ]

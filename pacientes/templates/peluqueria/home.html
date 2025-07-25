@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Peluquería Canina{% endblock %}
+
+{% block content %}
+<div class="text-center mt-5">
+  <h1 class="display-5 mb-4">✂️ Peluquería Canina</h1>
+  <p class="lead mb-5">Administra los servicios de peluquería de manera sencilla.</p>
+
+  <div class="d-flex flex-column flex-md-row justify-content-center gap-3 gap-md-4">
+    <!-- Botón para registrar servicios -->
+    <a href="{% url 'registrar_servicios_peluqueria' %}" class="btn btn-success btn-lg">
+      ➕ Registrar Servicios
+    </a>
+
+    <!-- Botón para listar servicios -->
+    <a href="{% url 'listar_servicios_peluqueria' %}" class="btn btn-primary btn-lg">
+      📋 Ver Servicios Registrados
+    </a>
+
+    <!-- Botón para volver al inicio general -->
+    <a href="{% url 'seleccion_area' %}" class="btn btn-secondary btn-lg">
+      🔙 Volver al Inicio
+    </a>
+  </div>
+</div>
+{% endblock %}

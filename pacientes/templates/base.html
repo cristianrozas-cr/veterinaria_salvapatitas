@@ -2,7 +2,7 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{% block title %}Sistema Veterinaria{% endblock %}</title>
     <link
       rel="stylesheet"
@@ -11,54 +11,97 @@
   </head>
   <body class="d-flex flex-column min-vh-100">
     <!-- Menú de navegación -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4 shadow">
       <div class="container-fluid">
-        <a class="navbar-brand" href="{% url 'home' %}">Salvapatitas</a>
+        <a class="navbar-brand fw-bold" href="{% url 'home' %}">Salvapatitas 🐾</a>
         <button
           class="navbar-toggler"
           type="button"
           data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-          aria-controls="navbarNav"
+          data-bs-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown"
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'listar_mascotas' %}">
-                Listado de Pacientes
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'registrar_mascota' %}">
-                Registrar Paciente
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/admin/">Admin</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/">Peluquería</a>
-            </li>
-          </ul>
 
-          <!-- Sección de autenticación al lado derecho -->
-          <ul class="navbar-nav ms-auto">
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+  {% if user.is_authenticated %}
+    <!-- Veterinaria Dropdown -->
+    <li class="nav-item dropdown">
+      <a
+        class="nav-link dropdown-toggle"
+        href="#"
+        id="veterinariaDropdown"
+        role="button"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        🐶 Veterinaria
+      </a>
+      <ul class="dropdown-menu" aria-labelledby="veterinariaDropdown">
+        <li><a class="dropdown-item" href="{% url 'listar_mascotas' %}">Listado de Pacientes</a></li>
+        <li><a class="dropdown-item" href="{% url 'registrar_mascota' %}">Registrar Paciente</a></li>
+        <li><hr class="dropdown-divider" /></li>
+        <li><a class="dropdown-item" href="{% url 'home' %}">Inicio Veterinaria</a></li>
+      </ul>
+    </li>
+
+    <!-- Peluquería Dropdown -->
+    <li class="nav-item dropdown">
+      <a
+        class="nav-link dropdown-toggle"
+        href="#"
+        id="peluqueriaDropdown"
+        role="button"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        ✂️ Peluquería Canina
+      </a>
+      <ul class="dropdown-menu" aria-labelledby="peluqueriaDropdown">
+        <li><a class="dropdown-item" href="{% url 'peluqueria_home' %}">Inicio Peluquería</a></li>
+        <li><a class="dropdown-item" href="{% url 'registrar_servicios_peluqueria' %}">Registrar Servicios</a></li>
+        <li><a class="dropdown-item" href="{% url 'listar_servicios_peluqueria' %}">Ver Servicios</a></li>
+      </ul>
+    </li>
+
+    <!-- Admin -->
+    <li class="nav-item">
+      <a class="nav-link" href="/admin/">⚙️ Admin</a>
+    </li>
+  {% endif %}
+</ul>
+
+          <!-- Usuario -->
+          <ul class="navbar-nav ms-auto align-items-center">
             {% if user.is_authenticated %}
+              <li class="nav-item me-2 text-white fw-semibold">
+                Hola, {{ user.username }}
+              </li>
               <li class="nav-item">
                 <form method="post" action="{% url 'logout' %}" style="display:inline;">
                   {% csrf_token %}
-                  <button type="submit" class="btn btn-danger btn-sm ms-2" style="padding:0; border:none; background:none;">
+                  <button
+                    type="submit"
+                    class="btn btn-outline-light btn-sm"
+                    style="white-space: nowrap;"
+                  >
                     Cerrar sesión
                   </button>
                 </form>
               </li>
             {% else %}
               <li class="nav-item">
-                <a class="nav-link btn-outline-light" href="{% url 'login' %}">Iniciar sesión</a>
+                <a
+                  href="{% url 'login' %}"
+                  class="btn btn-outline-light btn-sm"
+                  style="white-space: nowrap;"
+                >
+                  Iniciar sesión
+                </a>
               </li>
             {% endif %}
           </ul>
@@ -76,7 +119,7 @@
       {% if messages %}
         {% for message in messages %}
           <div
-            class="toast align-items-center text-white 
+            class="toast align-items-center text-white
             {% if message.tags == 'error' %}
               bg-danger
             {% else %}
@@ -105,18 +148,16 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-      // Inicializa los toasts automáticamente
       document.addEventListener('DOMContentLoaded', function () {
-        var toastElList = [].slice.call(document.querySelectorAll('.toast'))
+        var toastElList = [].slice.call(document.querySelectorAll('.toast'));
         toastElList.map(function (toastEl) {
-          return new bootstrap.Toast(toastEl).show()
-        })
+          return new bootstrap.Toast(toastEl).show();
+        });
       });
     </script>
 
     <footer class="bg-primary text-white text-center py-3 mt-auto">
       © 2025 Salvapatitas | Sistema Veterinario 🐾
-      <p>Usuario autenticado: {{ user.is_authenticated }}</p>
     </footer>
   </body>
 </html>
